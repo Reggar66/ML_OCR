@@ -59,7 +59,8 @@ dependencies {
     implementation(Config.Compose.material)
     implementation(Config.Compose.preview)
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
+    implementation(Config.LifeCycle.runtimeKtx)
+    implementation(Config.LifeCycle.viewModelCompose)
 
     implementation("androidx.activity:activity-compose:1.4.0")
 

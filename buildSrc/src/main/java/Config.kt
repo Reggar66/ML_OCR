@@ -20,4 +20,11 @@ object Config {
         const val textRecognition =
             "com.google.android.gms:play-services-mlkit-text-recognition:$version"
     }
+
+    object LifeCycle {
+        private const val version = "2.4.1"
+
+        const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
+        const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
+    }
 }

@@ -3,6 +3,7 @@ package com.example.ml_ocr.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,11 +17,13 @@ fun PreviewContainer(
     content: @Composable ColumnScope.() -> Unit
 ) {
     ML_OCRTheme {
-        Column(
-            modifier = modifier,
-            content = content,
-            verticalArrangement = verticalArrangement,
-            horizontalAlignment = horizontalAlignment
-        )
+        Surface {
+            Column(
+                modifier = modifier,
+                content = content,
+                verticalArrangement = verticalArrangement,
+                horizontalAlignment = horizontalAlignment
+            )
+        }
     }
 }

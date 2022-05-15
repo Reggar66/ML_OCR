@@ -12,6 +12,7 @@ object Config {
         const val ui = "androidx.compose.ui:ui:$version"
         const val material = "androidx.compose.material:material:$version"
         const val preview = "androidx.compose.ui:ui-tooling-preview:$version"
+        const val liveData = "androidx.compose.runtime:runtime-livedata:$version"
     }
 
     object ML_Kit {
@@ -26,5 +27,12 @@ object Config {
 
         const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
         const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
+    }
+
+    object Koin {
+        private const val version = "3.1.6"
+
+        const val android = "io.insert-koin:koin-android:$version"
+        const val compose = "io.insert-koin:koin-androidx-compose:$version"
     }
 }

@@ -53,16 +53,21 @@ dependencies {
     val composeVersion = "1.1.1"
 
     implementation(Config.Core.core)
+    implementation("androidx.activity:activity-compose:1.4.0")
 
     /* Compose */
     implementation(Config.Compose.ui)
     implementation(Config.Compose.material)
     implementation(Config.Compose.preview)
+    implementation(Config.Compose.liveData)
 
+    /* LifeCycle */
     implementation(Config.LifeCycle.runtimeKtx)
     implementation(Config.LifeCycle.viewModelCompose)
 
-    implementation("androidx.activity:activity-compose:1.4.0")
+    /* Koin */
+    implementation(Config.Koin.android)
+    implementation(Config.Koin.compose)
 
     /* ML Kit */
     implementation(Config.ML_Kit.textRecognition)

@@ -1,11 +1,12 @@
 package com.example.ml_ocr.ui.components
 
 import android.content.Context
+import android.net.Uri
 import androidx.annotation.DrawableRes
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 
-interface OcrInterface {
+interface OcrRepository {
     fun imageFromDrawableResource(
         context: Context,
         @DrawableRes drawableRes: Int,
@@ -17,5 +18,7 @@ interface OcrInterface {
         onSuccess: (visionText: Text) -> Unit,
         onError: (e: Exception) -> Unit
     )
+
+    fun imageFromPath(context: Context, uri: Uri): InputImage?
 
 }

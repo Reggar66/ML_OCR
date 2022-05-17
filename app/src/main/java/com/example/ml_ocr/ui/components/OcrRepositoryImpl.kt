@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.core.graphics.drawable.toBitmap
-import com.example.ml_ocr.common.dlog
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
@@ -13,7 +12,7 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import java.io.IOException
 import java.nio.ByteBuffer
 
-class OcrRepositoryImpl : OcrInterface {
+class OcrRepositoryImpl : OcrRepository {
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
 
@@ -65,13 +64,14 @@ class OcrRepositoryImpl : OcrInterface {
         return InputImage.fromBitmap(bitmap, rotationDegrees)
     }
 
-    private fun imageFromPath(context: Context, uri: Uri) {
-        val image: InputImage
+    override fun imageFromPath(context: Context, uri: Uri): InputImage? {
+        var image: InputImage? = null
         try {
             image = InputImage.fromFilePath(context, uri)
         } catch (e: IOException) {
             e.printStackTrace()
         }
+        return image
     }
 
     private fun imageFromBuffer(byteBuffer: ByteBuffer, rotationDegrees: Int) {

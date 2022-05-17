@@ -70,11 +70,14 @@ private val items = listOf(
 
 @Composable
 private fun ListOfImages(onItemClick: (drawableRes: Int) -> Unit) {
-    LazyRow(modifier = Modifier.fillMaxWidth()) {
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
         items(items) { item ->
             Image(
                 modifier = Modifier
-                    .size(50.dp)
+                    .size(100.dp)
                     .clickable { onItemClick(item) },
                 painter = painterResource(id = item),
                 contentDescription = ""

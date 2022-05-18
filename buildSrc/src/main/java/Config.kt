@@ -35,4 +35,11 @@ object Config {
         const val android = "io.insert-koin:koin-android:$version"
         const val compose = "io.insert-koin:koin-androidx-compose:$version"
     }
+
+    object Coil {
+        private const val version = "2.1.0"
+
+        const val coil = "io.coil-kt:coil:$version"
+        const val compose = "io.coil-kt:coil-compose:$version"
+    }
 }

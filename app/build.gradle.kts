@@ -72,6 +72,10 @@ dependencies {
     /* ML Kit */
     implementation(Config.ML_Kit.textRecognition)
 
+    /* Coil */
+    implementation(Config.Coil.coil)
+    implementation(Config.Coil.compose)
+
     /* Tests */
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

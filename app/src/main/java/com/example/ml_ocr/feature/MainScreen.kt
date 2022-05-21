@@ -1,33 +1,26 @@
 package com.example.ml_ocr.feature
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
-import coil.compose.AsyncImage
 import com.example.ml_ocr.R
-import com.example.ml_ocr.ui.components.OcrRepositoryMock
-import com.example.ml_ocr.ui.components.OcrViewModel
 import com.example.ml_ocr.ui.components.PreviewContainer
 import org.koin.androidx.compose.getViewModel
 
@@ -56,15 +49,15 @@ fun MainScreen(viewModel: OcrViewModel = getViewModel()) {
 
         /* Do ocr*/
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-            Button(onClick = {
+            Button(shape = CircleShape, onClick = {
                 viewModel.clearBitmap()
                 viewModel.processImage(context, currentImage)
             }) {
                 Text(text = "OCR")
             }
 
-            Button(onClick = {
-                viewModel.urlRequest(
+            Button(shape = CircleShape, onClick = {
+                viewModel.processFromUrlRequest(
                     context,
                     "https://media.geeksforgeeks.org/wp-content/uploads/20190528023339/Testproc1.jpg"
                 )
@@ -84,11 +77,7 @@ fun MainScreen(viewModel: OcrViewModel = getViewModel()) {
         Spacer(modifier = Modifier.height(16.dp))
 
         /* Result */
-        Text(text = "Result:")
-        Text(
-            modifier = Modifier.padding(horizontal = 8.dp),
-            text = resultText ?: "None."
-        )
+        Result(result = resultText)
         Spacer(modifier = Modifier.height(16.dp))
 
         bitMap?.asImageBitmap()?.let {
@@ -114,8 +103,11 @@ private val items = listOf(
 @Composable
 private fun ListOfImages(onItemClick: (drawableRes: Int) -> Unit) {
     LazyRow(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color.DarkGray),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp)
     ) {
         items(items) { item ->
             Image(
@@ -124,6 +116,24 @@ private fun ListOfImages(onItemClick: (drawableRes: Int) -> Unit) {
                     .clickable { onItemClick(item) },
                 painter = painterResource(id = item),
                 contentDescription = ""
+            )
+        }
+    }
+}
+
+@Composable
+private fun Result(result: String?) {
+    Card(
+        modifier = Modifier
+            .defaultMinSize(minHeight = 200.dp)
+            .fillMaxWidth(),
+        backgroundColor = Color.DarkGray
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = "Result:")
+            Text(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                text = result ?: "None."
             )
         }
     }

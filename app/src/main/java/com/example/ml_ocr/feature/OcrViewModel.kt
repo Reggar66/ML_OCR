@@ -1,17 +1,13 @@
-package com.example.ml_ocr.ui.components
+package com.example.ml_ocr.feature
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.annotation.DrawableRes
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import coil.ImageLoader
 import coil.imageLoader
 import coil.request.ImageRequest
 import com.example.ml_ocr.common.dlog
@@ -60,22 +56,7 @@ class OcrViewModel(private val ocrRepositoryImpl: OcrRepository) : ViewModel() {
         }
     }
 
-    fun processImage(context: Context, bitmap: Bitmap) {
-        ocrRepositoryImpl.processImage(
-            InputImage.fromBitmap(bitmap, 0),
-            onSuccess = { visionText ->
-                dlog { "OCR RESULT: " }
-                dlog { visionText.text }
-                mutableOcrResult.postValue(visionText.text)
-            },
-            onError = { e ->
-                dlog { "ERROR: $e" }
-            }
-        )
-
-    }
-
-    fun urlRequest(context: Context, url: String) {
+    fun processFromUrlRequest(context: Context, url: String) {
         val request = ImageRequest.Builder(context)
             .data(url)
             .listener(
@@ -96,5 +77,19 @@ class OcrViewModel(private val ocrRepositoryImpl: OcrRepository) : ViewModel() {
             .build()
 
         context.imageLoader.enqueue(request)
+    }
+
+    private fun processImage(context: Context, bitmap: Bitmap) {
+        ocrRepositoryImpl.processImage(
+            InputImage.fromBitmap(bitmap, 0),
+            onSuccess = { visionText ->
+                dlog { "OCR RESULT: " }
+                dlog { visionText.text }
+                mutableOcrResult.postValue(visionText.text)
+            },
+            onError = { e ->
+                dlog { "ERROR: $e" }
+            }
+        )
     }
 }

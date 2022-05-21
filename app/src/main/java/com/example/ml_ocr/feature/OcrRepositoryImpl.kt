@@ -1,4 +1,4 @@
-package com.example.ml_ocr.ui.components
+package com.example.ml_ocr.feature
 
 import android.content.Context
 import android.graphics.Bitmap

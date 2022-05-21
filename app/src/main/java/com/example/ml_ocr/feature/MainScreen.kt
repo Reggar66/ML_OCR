@@ -1,6 +1,9 @@
 package com.example.ml_ocr.feature
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -20,9 +23,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.example.ml_ocr.R
 import com.example.ml_ocr.ui.components.PreviewContainer
 import org.koin.androidx.compose.getViewModel
+
+private const val MIME_IMAGE = "image/*"
 
 @Composable
 fun MainScreen(viewModel: OcrViewModel = getViewModel()) {
@@ -34,6 +42,21 @@ fun MainScreen(viewModel: OcrViewModel = getViewModel()) {
 
     val bitMap by viewModel.bitMap.observeAsState()
 
+    var isFromFile by remember {
+        mutableStateOf(false)
+    }
+    var imageUir: Uri? by remember {
+        mutableStateOf(null)
+    }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            imageUir = uri
+            uri?.let { viewModel.processImage(context, it) }
+        }
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,6 +67,7 @@ fun MainScreen(viewModel: OcrViewModel = getViewModel()) {
         /* Image chooser */
         ListOfImages {
             currentImage = it
+            isFromFile = false
         }
         Spacer(modifier = Modifier.height(30.dp))
 
@@ -64,16 +88,32 @@ fun MainScreen(viewModel: OcrViewModel = getViewModel()) {
             }) {
                 Text(text = "URL OCR")
             }
+
+            Button(shape = CircleShape, onClick = {
+                launcher.launch(MIME_IMAGE)
+                isFromFile = true
+            }) {
+                Text(text = "From File")
+            }
         }
         Spacer(modifier = Modifier.height(30.dp))
 
         /* Current Image */
-        Image(
-            modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(id = currentImage),
-            contentDescription = "",
-            contentScale = ContentScale.FillWidth
-        )
+        if (!isFromFile) {
+            Image(
+                modifier = Modifier.fillMaxWidth(),
+                painter = painterResource(id = currentImage),
+                contentDescription = "",
+                contentScale = ContentScale.FillWidth
+            )
+        } else {
+            AsyncImage(
+                modifier = Modifier.fillMaxWidth(),
+                model = imageUir,
+                contentDescription = "",
+                contentScale = ContentScale.FillWidth
+            )
+        }
         Spacer(modifier = Modifier.height(16.dp))
 
         /* Result */
@@ -140,7 +180,7 @@ private fun Result(result: String?) {
 }
 
 
-@Preview
+//@Preview
 @Preview(name = "Dark", uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun MainScreenPreview() {

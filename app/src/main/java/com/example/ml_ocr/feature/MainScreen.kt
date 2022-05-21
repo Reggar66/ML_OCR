@@ -147,7 +147,7 @@ private fun ListOfImages(onItemClick: (drawableRes: Int) -> Unit) {
             .fillMaxWidth()
             .background(color = Color.DarkGray),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp)
+        contentPadding = PaddingValues(horizontal = 10.dp)
     ) {
         items(items) { item ->
             Image(
